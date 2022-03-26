@@ -4,6 +4,8 @@ import { Button, Col, Row, Image, Space } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { TextDesc, TextTitle } from "../utils/antd-custom-components/Text";
 import LayoutMainPage from "../utils/Layout/LayoutMainPage";
+import { fetchListGetRepos } from "../config/zustand/actions/actionListRepos";
+import useStoreListRepos from "../config/zustand/store/useStoreListRepos";
 
 export default function Home() {
   return (
@@ -26,7 +28,12 @@ export default function Home() {
             going forward is to increase the skills that are already owned and
             add skills in the world of programming
           </TextDesc>
-          <Button type="primary" size="large" icon={<DownloadOutlined />}>
+          <Button
+            type="primary"
+            size="large"
+            icon={<DownloadOutlined />}
+            // onClick={() => fetchListGetRepos(dispatch)}
+          >
             Cv Download
           </Button>
         </Col>

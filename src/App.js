@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import ListRepository from "./pages/ListRepository";
 import { Suspense } from "react";

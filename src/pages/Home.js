@@ -1,12 +1,10 @@
 import React from "react";
 import { RowFull } from "../utils/antd-custom-components/Row";
-import { Button, Col, Row, Image, Space } from "antd";
+import { Button, Col, Image } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { TextDesc, TextTitle } from "../utils/antd-custom-components/Text";
 import LayoutMainPage from "../utils/Layout/LayoutMainPage";
-import { fetchListGetRepos } from "../config/zustand/actions/actionListRepos";
-import useStoreListRepos from "../config/zustand/store/useStoreListRepos";
-
+// import cvDownload from "../../public/files/Cv Muhammad Nur Zaeni 2022.pdf";
 export default function Home() {
   return (
     <LayoutMainPage>
@@ -19,7 +17,7 @@ export default function Home() {
             alt="Image Profile"
           />
         </Col>
-        <Col style={{ textAlign: "center" }}>
+        <Col span={8} style={{ textAlign: "center" }}>
           <TextTitle>Muhammad Nur Zaeni</TextTitle>
           <TextDesc>
             I am a person who likes challenges, diligent, disciplined, and
@@ -32,7 +30,8 @@ export default function Home() {
             type="primary"
             size="large"
             icon={<DownloadOutlined />}
-            // onClick={() => fetchListGetRepos(dispatch)}
+            href={"files/Cv Muhammad Nur Zaeni 2022.pdf"}
+            download="CV Muhammad Nur Zaeni"
           >
             Cv Download
           </Button>

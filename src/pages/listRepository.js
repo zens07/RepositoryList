@@ -1,28 +1,70 @@
-import { Col, Row, Table } from "antd";
-import React, { useEffect } from "react";
+import { Col, message, Row, Space, Table, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
 import { fetchListGetRepos } from "../config/zustand/actions/actionListRepos";
 import useStoreListRepos from "../config/zustand/store/useStoreListRepos";
 import { TextDesc } from "../utils/antd-custom-components/Text";
 import LayoutMainPage from "../utils/Layout/LayoutMainPage";
+import { CopyOutlined, DoubleRightOutlined } from "@ant-design/icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 export default function ListRepository() {
+  const { dispatch, listRepository, loadingRepo } = useStoreListRepos(
+    (state) => state
+  );
+  const [copied, setCopied] = useState({ success: false, value: "", key: "" });
+  const handleCopied = (text) => {
+    setCopied({
+      success: true,
+      key: text,
+      value: `git clone https://github.com/${text}`,
+    });
+  };
   const setColumns = [
     {
       title: "Name Repository",
       dataIndex: "name",
       key: "name",
-      render: (text, record, index) => (
-        <TextDesc>{record?.name ?? "-"}</TextDesc>
+      render: (text) => <TextDesc>{text}</TextDesc>,
+    },
+    {
+      title: <div style={{ textAlign: "center" }}>Action</div>,
+      dataIndex: "",
+      width: 100,
+      key: "action",
+      render: (text, record) => (
+        <div style={{ textAlign: "center" }}>
+          <Space size={"large"}>
+            <CopyToClipboard
+              text={copied.value}
+              onCopy={() => handleCopied(record.full_name)}
+            >
+              <Tooltip placement="top" title={"copied for clone"}>
+                <CopyOutlined />
+              </Tooltip>
+            </CopyToClipboard>
+            <Tooltip placement="top" title={"Go to github repository"}>
+              <DoubleRightOutlined
+                onClick={() => {
+                  window.open(
+                    `https://github.com/${record?.full_name}`,
+                    "_blank"
+                  );
+                }}
+              />
+            </Tooltip>
+          </Space>
+        </div>
       ),
     },
-    { title: "Desc", dataIndex: "desc", key: "desc" },
   ];
-  const { dispatch, listRepository, loadingRepo } = useStoreListRepos(
-    (state) => state
-  );
   useEffect(() => {
     fetchListGetRepos(dispatch);
   }, []);
+  useEffect(() => {
+    if (copied.success) {
+      message.success("Copied Success");
+    }
+  }, [copied]);
 
   return (
     <LayoutMainPage>
@@ -33,6 +75,7 @@ export default function ListRepository() {
             columns={setColumns}
             loading={loadingRepo}
             pagination={{ pageSize: 5 }}
+            size="small"
           />
         </Col>
       </Row>
